@@ -15,6 +15,7 @@ import ViewScategorie from "./components/scategories/Viewscategorie";
 import Viewarticle from "./components/articles/Viewarticle";
 import Menu from "./components/Menu";
 
+import ArticleList from './components/articles/ArticleListVersion2'
 
       /* The following line can be included in your src/index.js or App.js file */
     
@@ -41,6 +42,7 @@ return (
 <Route path="/scategories/view/:id" element={<ViewScategorie/>}/>
 <Route path="/articleapp" element={<ArticlesApp/>}/>
 
+<Route path="/articleappV2" element={<ArticleList/>}/>
 </Routes>
 </Router>
 </div>
