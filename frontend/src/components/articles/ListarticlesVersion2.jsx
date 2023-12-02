@@ -23,7 +23,7 @@ const Listarticles = () => {
 
 useEffect(() => {
   fetcharticles()
-},[page])
+},[page,rowsPerPage])
 
   const fetcharticles=async()=>{ 
     
@@ -117,7 +117,13 @@ useEffect(() => {
     <div>
  
 </div>
-
+Rows / page : <select value={rowsPerPage} onChange={(e) =>setRowsPerPage(e.target.value)}>
+  <option>5</option>
+  <option>10</option>
+  <option>20</option>
+  <option>50</option>
+  <option>100</option>
+</select>
 <ResponsivePagination
       current={page}
       total={Math.ceil(tot/rowsPerPage)}
