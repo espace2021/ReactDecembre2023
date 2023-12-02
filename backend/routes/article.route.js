@@ -5,9 +5,12 @@ const Article=require("../models/article")
  
 // afficher la liste des articles par page
 router.get('/productspage/', async(req, res) => { 
- 
+   const page = req.query.page ||1; // Current page
    const pagesize = req.query.pagesize ||5; // Number of items per page
     
+       // Calculez le nombre d'éléments à sauter (offset)
+       const offset = (page - 1) * pagesize;
+
    
     try {
 
@@ -17,6 +20,7 @@ router.get('/productspage/', async(req, res) => {
       const articlesTot = await Article.countDocuments();
 
     const articles =  await Article.find( {}, null, {sort: {'_id': -1}})
+        .skip(offset)
         .limit(pagesize)
 
       res.status(200).json({articles:articles,tot:articlesTot});

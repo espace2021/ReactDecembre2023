@@ -2,7 +2,7 @@ import { BrowserRouter as Router,Routes, Route } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.css";
 import Editarticle from "./components/articles/Editarticle";
 import Insertarticle from "./components/articles/Insertarticle";
-import Listarticles from "./components/articles/Listarticles";
+import Listarticles from "./components/articles/ListarticlesVersion2";
 import Editcategorie from "./components/categories/Editcategorie";
 import Insertcategorie from "./components/categories/Insertcategorie";
 import Listcategories from "./components/categories/Listcategories";
