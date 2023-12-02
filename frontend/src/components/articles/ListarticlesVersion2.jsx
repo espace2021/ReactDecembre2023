@@ -23,7 +23,7 @@ const Listarticles = () => {
 
 useEffect(() => {
   fetcharticles()
-},[page,rowsPerPage])
+},[page])
 
   const fetcharticles=async()=>{ 
     
