@@ -17,7 +17,7 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
-const Editarticle = ({art,updateProduct,show,setShow}) => {
+const Editarticle = ({art,updateProduct}) => {
 
   const [article, setArticle] = useState(art);
   
@@ -30,9 +30,9 @@ const Editarticle = ({art,updateProduct,show,setShow}) => {
 
 const[scategories,setScategories]=useState([])
 const [validated, setValidated] = useState(false);
-
+const [show, setShow] = useState(false);
 const handleClose = () => setShow(false);
-
+const handleShow = () => setShow(true);
 
 useEffect(() => {
   getScategories()
@@ -121,7 +121,15 @@ const handlechange=(e)=>{
   return (
 <div >
 
-
+           
+<Button
+        onClick={handleShow}
+        variant="warning"
+        size="md"
+        className="text-warning btn-link edit"
+        >
+        <i className="fa-solid fa-pen-to-square"></i>
+        </Button>
          
   
 <Modal show={show} onHide={handleClose}>

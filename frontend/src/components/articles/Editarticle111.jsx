@@ -17,22 +17,41 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
 
-const Editarticle = ({art,updateProduct,show,setShow}) => {
+const Editarticle = ({art,updateProduct}) => {
 
-  const [article, setArticle] = useState(art);
+  const [reference, setReference] = useState("");
+  const [designation, setDesignation] = useState("");
+  const [marque, setMarque] = useState("");
+  const [prix, setPrix] = useState("");
+  const [qtestock, setQtestock] = useState("");
+  const [imageart, setImageart] = useState("");
+  const [scategorieID, setScategorieID] = useState("");
   
-  const [files, setFiles] = useState([
-    {
-      source: art.imageart,
-      options: { type: 'local' }
-    }
-    ]);
+  const [files, setFiles] = useState([]);
 
 const[scategories,setScategories]=useState([])
 const [validated, setValidated] = useState(false);
-
+const [show, setShow] = useState(false);
 const handleClose = () => setShow(false);
+const handleShow = () => setShow(true);
 
+useEffect(()=>{
+  
+      setReference(art.reference);
+      setDesignation(art.designation);
+      setMarque(art.marque);
+      setPrix(art.prix);
+      setScategorieID(art.scategorieID);
+      setQtestock(art.qtestock);
+      setImageart(art.imageart);
+      setFiles( [
+          {
+            source: art.imageart,
+            options: { type: 'local' }
+          }
+          ])
+
+},[art]);
 
 useEffect(() => {
   getScategories()
@@ -44,13 +63,21 @@ const getScategories=async()=>{
   })
 }
 
-const handlechange=(e)=>{
-  
-    setArticle({...article,[e.target.name]:e.target.value})
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const article = {
+    _id:art._id,
+    reference,
+    designation,
+    marque,
+    prix, 
+    qtestock, 
+    imageart,
+    scategorieID
+  };
+
     const form = e.currentTarget;
     if (form.checkValidity() === true) {
    
@@ -75,7 +102,13 @@ const handlechange=(e)=>{
     
 
   const handleReset=()=>{
-    setArticle({})
+    setReference("");
+    setDesignation("");
+    setMarque("");
+    setPrix("");
+    setScategorieID("");
+    setQtestock("");
+    setImageart("");
     setFiles("")
     handleClose()
     }
@@ -105,7 +138,7 @@ const handlechange=(e)=>{
         .then((response) => response.data)
         .then((data) => {
           console.log(data);
-          setArticle({...article,imageart:data.url}) ;
+          setImageart(res.data.imageart);
           load(data);
         })
         .catch((error) => {
@@ -121,7 +154,15 @@ const handlechange=(e)=>{
   return (
 <div >
 
-
+           
+<Button
+        onClick={handleShow}
+        variant="warning"
+        size="md"
+        className="text-warning btn-link edit"
+        >
+        <i className="fa-solid fa-pen-to-square"></i>
+        </Button>
          
   
 <Modal show={show} onHide={handleClose}>
@@ -141,8 +182,8 @@ required
 type="text"
 placeholder="Référence"
 name="reference"
-value={article.reference}
-onChange={(e)=>handlechange(e)}
+value={reference}
+onChange={e => setReference(e.target.value)}
 />
 <Form.Control.Feedback type="invalid">
 Saisir Référence Article
@@ -155,8 +196,9 @@ required
 type="text"
 name="designation"
 placeholder="Désignation"
-value={article.designation}
-onChange={(e)=>handlechange(e)}
+value={designation}
+onChange={e => setDesignation(e.target.value)}
+
 />
 <Form.Control.Feedback type="invalid">
 Saisir Désignation
@@ -172,8 +214,8 @@ type="text"
 required
 name="marque"
 placeholder="Marque"
-value={article.marque}
-onChange={(e)=>handlechange(e)}
+value={marque}
+onChange={e => setMarque(e.target.value)}
 />
 <Form.Control.Feedback type="invalid">
 Marque Incorrecte
@@ -186,8 +228,8 @@ Marque Incorrecte
 type="number"
 placeholder="Prix"
 name="prix"
-value={article.prix}
-onChange={(e)=>handlechange(e)}
+value={prix}
+onChange={e => setPrix(e.target.value)}
 />
 </Form.Group>
 </Row>
@@ -200,8 +242,8 @@ Qté stock<span className="req-tag">*</span>
 required
 type="number"
 name="qtestock"
-value={article.qtestock}
-onChange={(e)=>handlechange(e)}
+value={qtestock}
+onChange={e => setQtestock(e.target.value)}
 placeholder="Qté stock"
 />
 <Form.Control.Feedback type="invalid">
@@ -214,8 +256,8 @@ Qté stock Incorrect
 as="select"
 type="select"
 name="scategorieID"
-value={article.scategorieID?._id}
-onChange={(e)=>handlechange(e)}
+value={scategorieID?._id}
+onChange={(e)=>setScategorieID(e.target.value)}
 >
 <option></option>
 {scategories.map((scat)=><option key={scat._id}

@@ -1,10 +1,16 @@
 import React from 'react'
-import { useMemo } from 'react';
+import { useMemo,useState } from 'react';
 import { MaterialReactTable,useMaterialReactTable} from 'material-react-table';
 import { Box } from '@mui/material';
 import Button from 'react-bootstrap/Button';
 
-const ArticleList = ({products,deleteProduct}) => {
+import Editarticle from './Editarticle';
+
+const ArticleList = ({products,deleteProduct,updateProduct}) => {
+
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+const [article,setArticle]=useState([])
 
 
     const columns = useMemo(
@@ -85,18 +91,18 @@ const ArticleList = ({products,deleteProduct}) => {
             header: 'actions',
             size: 100,
             Cell: ({ cell, row }) => (
-            <div >
-            <Button
-            onClick={() => {
-            console.log("modification ...")
-            }}
-            variant="warning"
-            size="md"
-            className="text-warning btn-link edit"
-            >
-            <i className="fa-solid fa-pen-to-square"></i>
-            </Button>
-            <Button
+            <div>
+          
+       <Button
+        onClick={()=>{setArticle(cell.row.original);handleShow()}}
+        variant="warning"
+        size="md"
+        className="text-warning btn-link edit"
+        >
+        <i className="fa-solid fa-pen-to-square"></i>
+        </Button>
+
+        <Button
             onClick={(e) => {
               deleteProduct(cell.row.original._id,cell.row.original.reference, e);
             }}
@@ -121,10 +127,16 @@ const ArticleList = ({products,deleteProduct}) => {
     
        data: products, //data must be memoized or stable (useState, useMemo, defined outside of this component, etc.)
     
+       getRowId: (row) => row._id,
+
       });
+
+
+
   return (
     <div>
       <MaterialReactTable table={table} />;
+      {show ? <Editarticle art={article} updateProduct={updateProduct} show={true} setShow={setShow} /> : null}
     </div>
   )
 }

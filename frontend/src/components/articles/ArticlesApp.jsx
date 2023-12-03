@@ -10,13 +10,17 @@ import ArticleList from './ArticleList'
 import Insertarticle from './Insertarticle';
 const ArticlesApp = () => {
     const [products,setProducts]=useState([])
-    
+       
+   
     useEffect(() => {
         listproduits()
     }, [])
+
     const listproduits=async()=>{
         try {
-            await fetcharticles().then(res=>setProducts(res.data))
+            await fetcharticles().then(res=>{
+                setProducts(res.data)
+                      })
 
         }
          catch (error) {
@@ -26,9 +30,10 @@ const ArticlesApp = () => {
     }
 
     const addproduct=(newproduit)=>{
-        
-        setProducts([newproduit,...products])
+              setProducts([newproduit,...products])
         }
+
+
         const  deleteProduct = (productId,ref) => {
             confirmAlert({
                 title: "Confirm delete...",
@@ -37,8 +42,9 @@ const ArticlesApp = () => {
                 {
                 label: 'Oui',
                 onClick: () =>  deletearticle(productId)
-                .then(res=>
-                setProducts(products.filter((product) => product._id !== productId)))
+                .then(res=>{ 
+                  setProducts(products.filter((product) => product._id !== productId))
+                })
                 //.then(console.log("suppression effectuée avec success"))
                 .catch(error=>console.log(error))
                 },
@@ -48,6 +54,7 @@ const ArticlesApp = () => {
                 ]
                 });
                 }
+
     const updateProduct = (prmod) => {
 setProducts(products.map((product) =>product._id === prmod._id ? prmod : product));
    };
@@ -56,7 +63,7 @@ setProducts(products.map((product) =>product._id === prmod._id ? prmod : product
     <div>
     <Suspense fallback={<p>Loading...</p>}>
     <Insertarticle addproduct={addproduct}/></Suspense>
-      <ArticleList products={products} deleteProduct={deleteProduct}/>
+      <ArticleList products={products} deleteProduct={deleteProduct} updateProduct={updateProduct} />
       
     </div>
   )
