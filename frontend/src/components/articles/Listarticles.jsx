@@ -2,14 +2,22 @@ import React, { useState,useEffect} from 'react'
 import axios from "axios"
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
+
 
 
 import AjoutArticle from './Insertarticle'
 
 import TablePagination from '@mui/material/TablePagination';
 
+import Editarticle from './Editarticle';
+
 const Listarticles = () => {
+
+   //pour edit modal
+   const [article,setArticle]=useState([])
+   const [show, setShow] = useState(false);
+   const handleShow = (art) => {setShow(true);setArticle(art);}
+
 
   const [articles,setArticles]=useState([])
 
@@ -24,7 +32,6 @@ const Listarticles = () => {
   };
 
  
-
   const handleChangeRowsPerPage = (event) => {
     const selectedRowsPerPage = parseInt(event.target.value, 10);
 
@@ -72,7 +79,9 @@ useEffect(() => {
         });
     };
 
-   
+    const updateProduct =(prmod) => {
+      setArticles(articles.map((product) =>product._id === prmod._id ? prmod : product));
+      }
 
   return (
 <div className='container'>
@@ -109,10 +118,14 @@ useEffect(() => {
           <td>{art.marque}</td>
           <td>{art.prix}</td>
           <td>{art.qtestock}</td>
-         <td> <Link className="btn btn-outline-primary mx-2" to={`/article/edit/${art._id}`}>
-         <i className="fa-solid fa-pen-to-square"></i>
-          Edit
-        </Link>
+         <td>  <Button
+        onClick={()=>{handleShow(art)}}
+        variant="warning"
+        size="md"
+        className="text-warning btn-link edit"
+        >
+        <i className="fa-solid fa-pen-to-square"></i>
+        </Button>
          </td>
           <td><Button variant="outline-danger"
           onClick={() => handleDelete(art._id)}
@@ -129,6 +142,8 @@ useEffect(() => {
  
 </div>
 
+{show ? <Editarticle art={article} updateProduct={updateProduct} show={true} setShow={setShow} /> : null}
+  
 
     <TablePagination
       component="div"

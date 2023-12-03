@@ -15,7 +15,7 @@ const ArticlesApp = () => {
         listproduits()
     }, [])
 
-    const listproduits=useCallback(async () => {
+    const listproduits= async () => {
         try {
             await fetcharticles().then(res=>{
                 setProducts(res.data)
@@ -26,7 +26,7 @@ const ArticlesApp = () => {
             console.log(error)
         }
           
-    }, [])
+    }
 
     const addproduct=useCallback((newproduit) => {
               setProducts([newproduit,...products])

@@ -8,6 +8,7 @@ import Editarticle from './Editarticle';
 
 const ArticleList = ({products,deleteProduct,updateProduct}) => {
 
+  //pour edit modal
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
 const [article,setArticle]=useState([])
@@ -130,8 +131,6 @@ const [article,setArticle]=useState([])
        getRowId: (row) => row._id,
 
       });
-
-
 
   return (
     <div>

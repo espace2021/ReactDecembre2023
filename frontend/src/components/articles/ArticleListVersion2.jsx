@@ -7,13 +7,20 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import {deletearticle} from "../../services/articleservice"
 
-import { Suspense }from 'react';
+
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 import Insertarticle from './Insertarticle';
 
+import Editarticle from './Editarticle';
+
 const ArticleList = () => {
+
+  //pour edit modal
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+const [article,setArticle]=useState([])
 
 // crud methods
 const addproduct=(newproduit)=>{
@@ -193,10 +200,8 @@ setProducts(products.map((product) =>product._id === prmod._id ? prmod : product
         size: 100,
         Cell: ({ cell, row }) => (
         <div >
-        <Button
-        onClick={() => {
-        console.log("modification ...")
-        }}
+         <Button
+        onClick={()=>{setArticle(cell.row.original);handleShow()}}
         variant="warning"
         size="md"
         className="text-warning btn-link edit"
@@ -254,9 +259,10 @@ setProducts(products.map((product) =>product._id === prmod._id ? prmod : product
   });
 
   return <div>
-  <Suspense fallback={<p>Loading...</p>}>
-  <Insertarticle addproduct={addproduct}/></Suspense>
+  
+  <Insertarticle addproduct={addproduct}/>
   <MaterialReactTable table={table} />;
+  {show ? <Editarticle art={article} updateProduct={updateProduct} show={true} setShow={setShow} /> : null}
   </div>
 };
 

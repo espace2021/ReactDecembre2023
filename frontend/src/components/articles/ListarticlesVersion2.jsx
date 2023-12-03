@@ -10,7 +10,15 @@ import AjoutArticle from './Insertarticle'
 import ResponsivePagination from 'react-responsive-pagination';
 import 'react-responsive-pagination/themes/classic.css';
 
+import Editarticle from './Editarticle';
+
 const Listarticles = () => {
+
+   //pour edit modal
+   const [article,setArticle]=useState([])
+   const [show, setShow] = useState(false);
+   const handleShow = (art) => {setShow(true);setArticle(art);}
+
 
   const [articles,setArticles]=useState([])
 
@@ -61,7 +69,9 @@ useEffect(() => {
         });
     };
 
-   
+    const updateProduct =(prmod) => {
+      setArticles(articles.map((product) =>product._id === prmod._id ? prmod : product));
+      }  
 
   return (
 <div className='container'>
@@ -98,10 +108,15 @@ useEffect(() => {
           <td>{art.marque}</td>
           <td>{art.prix}</td>
           <td>{art.qtestock}</td>
-         <td> <Link className="btn btn-outline-primary mx-2" to={`/article/edit/${art._id}`}>
-         <i className="fa-solid fa-pen-to-square"></i>
-          Edit
-        </Link>
+         <td> <Button 
+          variant="outline-default"
+        onClick={()=>{handleShow(art)}}
+        
+        size="md"
+        className="text-warning btn-link edit"
+        >
+        <i className="fa-solid fa-pen-to-square"></i> Edit
+        </Button>
          </td>
           <td><Button variant="outline-danger"
           onClick={() => handleDelete(art._id)}
@@ -129,7 +144,8 @@ Rows / page : <select value={rowsPerPage} onChange={(e) =>setRowsPerPage(e.targe
       total={Math.ceil(tot/rowsPerPage)}
       onPageChange={setPage}
     />
-
+{show ? <Editarticle art={article} updateProduct={updateProduct} show={true} setShow={setShow} /> : null}
+ 
     </div>
   )
 }
