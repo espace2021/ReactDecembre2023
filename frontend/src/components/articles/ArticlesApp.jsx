@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
-import { Suspense }from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 import {fetcharticles,deletearticle} from "../../services/articleservice"
-import { useEffect } from 'react'
 import ArticleList from './ArticleList'
-//const Insertarticle = React.lazy(await()=>import('./Insertarticle'))
+const Insertarticle = React.lazy(()=>import('./Insertarticle'))
 
-import Insertarticle from './Insertarticle';
+//import Insertarticle from './Insertarticle';
+
 const ArticlesApp = () => {
     const [products,setProducts]=useState([])
        
@@ -16,7 +15,7 @@ const ArticlesApp = () => {
         listproduits()
     }, [])
 
-    const listproduits=async()=>{
+    const listproduits=useCallback(async () => {
         try {
             await fetcharticles().then(res=>{
                 setProducts(res.data)
@@ -27,14 +26,14 @@ const ArticlesApp = () => {
             console.log(error)
         }
           
-    }
+    }, [])
 
-    const addproduct=(newproduit)=>{
+    const addproduct=useCallback((newproduit) => {
               setProducts([newproduit,...products])
-        }
+            }, [products]);
 
 
-        const  deleteProduct = (productId,ref) => {
+        const deleteProduct = useCallback((productId, ref) => {
             confirmAlert({
                 title: "Confirm delete...",
                 message: " supprimer l' article: " + ref,
@@ -53,16 +52,16 @@ const ArticlesApp = () => {
                 }
                 ]
                 });
-                }
+            }, [products]);
 
-    const updateProduct = (prmod) => {
+    const updateProduct =useCallback( (prmod) => {
 setProducts(products.map((product) =>product._id === prmod._id ? prmod : product));
-   };
+}, [products]);
                     
   return (
     <div>
-    <Suspense fallback={<p>Loading...</p>}>
-    <Insertarticle addproduct={addproduct}/></Suspense>
+   
+      <Insertarticle addproduct={addproduct}/>
       <ArticleList products={products} deleteProduct={deleteProduct} updateProduct={updateProduct} />
       
     </div>

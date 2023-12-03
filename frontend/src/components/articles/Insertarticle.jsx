@@ -251,4 +251,5 @@ onClick={()=>handleReset()}>Annuler</Button>
 
 })
 
-export default Insertarticle
+//export default Insertarticle
+export default React.memo(Insertarticle)

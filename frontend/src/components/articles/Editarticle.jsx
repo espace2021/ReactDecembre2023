@@ -255,4 +255,5 @@ onClick={()=>handleReset()}>Annuler</Button>
   )
 }
 
-export default Editarticle
+//export default Editarticle
+export default React.memo(Editarticle)

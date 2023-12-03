@@ -141,4 +141,5 @@ const [article,setArticle]=useState([])
   )
 }
 
-export default ArticleList
+//export default ArticleList
+export default React.memo(ArticleList)
